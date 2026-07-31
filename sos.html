@@ -3,99 +3,101 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emergency SOS — Where I Am</title>
+<title>Emergency SOS — I'm Here!</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #10221F; --panel: #16302B; --panel-2: #1C3B34;
-    --gold: #E3A857; --coral: #E2725B; --sage: #7FA98C;
-    --paper: #F3EFE6; --slate: #9CB0A8; --danger: #C94C4C; --border: #234139;
+    --cream: #FBEFE0; --cream-2: #F6E4CF;
+    --navy: #14233A; --navy-soft: #33445E;
+    --coral: #E8624A; --coral-dark: #C94A34;
+    --card: #FFFFFF; --panel-2: #FBF5EC; --line: #EAD9C4;
+    --slate: #7B7264; --sage: #3F9E6E; --danger: #D63A2E;
   }
   * { box-sizing: border-box; }
   html,body { margin:0; padding:0; }
   body {
-    background: radial-gradient(ellipse at top, #1F2A17 0%, var(--ink) 60%);
-    color: var(--paper); font-family:'Inter', sans-serif;
+    background: linear-gradient(160deg, #FCF4E8 0%, var(--cream) 45%, var(--cream-2) 100%);
+    color: var(--navy); font-family:'Inter', sans-serif;
     min-height: 100vh; padding: 24px; display:flex; align-items:center; justify-content:center;
   }
   .wrap { width:100%; max-width: 460px; }
   .eyebrow { font-family:'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--danger); margin: 0 0 8px; text-align:center; }
-  h1 { font-family:'Fraunces', serif; font-weight:700; font-size: 26px; margin: 0 0 6px; text-align:center; }
-  .sub { color: var(--slate); font-size: 13px; text-align:center; margin: 0 0 24px; line-height:1.5; }
+  h1 { font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size: 26px; margin: 0 0 6px; text-align:center; color: var(--navy); letter-spacing:-0.02em; }
+  .sub { color: var(--navy-soft); font-size: 13px; text-align:center; margin: 0 0 24px; line-height:1.5; }
 
   .sos-btn {
     width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px; display:block;
-    background: radial-gradient(circle at 35% 30%, #E0736A, var(--danger));
-    border: none; color: #fff; font-family:'Fraunces', serif; font-weight:700; font-size: 24px;
-    letter-spacing: 0.04em; box-shadow: 0 0 0 8px rgba(201,76,79,0.15), 0 20px 50px rgba(0,0,0,0.5);
+    background: radial-gradient(circle at 35% 30%, #EE6455, var(--danger));
+    border: none; color: #fff; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size: 24px;
+    letter-spacing: 0.04em; box-shadow: 0 0 0 8px rgba(214,58,46,0.15), 0 16px 40px rgba(214,58,46,0.35);
     cursor: pointer;
   }
   .sos-btn:active { transform: scale(0.97); }
 
   .panel {
-    background: var(--panel); border: 1px solid var(--border); border-radius: 16px;
-    padding: 22px; margin-bottom: 16px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 22px; margin-bottom: 16px; box-shadow: 0 6px 20px rgba(20,35,58,0.06);
   }
-  .panel h2 { font-family:'Fraunces', serif; font-size:16px; margin: 0 0 10px; }
+  .panel h2 { font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; font-size:16px; margin: 0 0 10px; color: var(--navy); }
   .panel .desc { color: var(--slate); font-size: 12px; line-height:1.5; margin: 0 0 14px; }
 
   .contact-row { display:flex; gap:8px; margin-bottom: 10px; align-items:center; }
   .contact-row input {
-    background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px;
-    padding: 10px 12px; color: var(--paper); font-family:'Inter', sans-serif; font-size: 13px;
+    background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px;
+    padding: 10px 12px; color: var(--navy); font-family:'Inter', sans-serif; font-size: 13px;
   }
   .contact-row .nameInput { flex: 1; }
   .contact-row .phoneInput { flex: 1.2; }
   .contact-row button {
-    background: transparent; border: 1px solid var(--border); color: var(--slate);
+    background: transparent; border: 1px solid var(--line); color: var(--slate);
     border-radius: 8px; padding: 8px 10px; cursor: pointer; font-size: 12px;
   }
   .add-row { display:flex; gap:8px; }
   .add-row input {
-    background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px;
-    padding: 10px 12px; color: var(--paper); font-family:'Inter', sans-serif; font-size: 13px;
+    background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px;
+    padding: 10px 12px; color: var(--navy); font-family:'Inter', sans-serif; font-size: 13px;
   }
   #contactName { flex:1; } #contactPhone { flex:1.2; }
   .add-row button {
-    background: var(--gold); color: #241705; border:none; border-radius: 8px;
-    padding: 10px 14px; font-family:'Fraunces', serif; font-weight:700; font-size: 13px; cursor:pointer;
+    background: var(--coral); color: #fff; border:none; border-radius: 8px;
+    padding: 10px 14px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; font-size: 13px; cursor:pointer;
   }
   .empty-note { color: var(--slate); font-size: 12px; font-style: italic; }
 
   .shake-status { display:flex; align-items:center; justify-content:space-between; gap:12px; }
   .shake-status button {
-    background: var(--panel-2); border: 1px solid var(--border); color: var(--paper);
+    background: var(--panel-2); border: 1px solid var(--line); color: var(--navy);
     border-radius: 8px; padding: 10px 14px; font-family:'Inter', sans-serif; font-size: 13px; cursor:pointer;
   }
   .shake-status button.on { border-color: var(--sage); color: var(--sage); }
 
   .note { font-size: 11px; color: var(--slate); line-height:1.5; text-align:center; margin-top: 10px; }
-  .backlink { display:block; text-align:center; margin-top: 18px; color: var(--slate); font-size: 12px; text-decoration:none; }
-  .backlink:hover { color: var(--gold); }
+  .backlink { display:block; text-align:center; margin-top: 18px; color: var(--navy-soft); font-size: 12px; text-decoration:none; }
+  .backlink:hover { color: var(--coral); }
 
   .overlay {
-    position: fixed; inset:0; background: rgba(16,34,31,0.97); z-index: 2000;
+    position: fixed; inset:0; background: rgba(214,58,46,0.97); z-index: 2000;
     display:none; align-items:center; justify-content:center; padding: 24px; text-align:center;
   }
   .overlay.visible { display:flex; }
-  .overlay .count { font-family:'Fraunces', serif; font-size: 80px; font-weight:700; color: var(--danger); margin: 0 0 10px; }
-  .overlay p { color: var(--paper); font-size: 15px; margin: 0 0 24px; }
+  .overlay .count { font-family:'Plus Jakarta Sans', sans-serif; font-size: 88px; font-weight:800; color: #fff; margin: 0 0 10px; }
+  .overlay p { color: #fff; font-size: 15px; margin: 0 0 24px; }
   .overlay .cancel {
-    background: var(--sage); color: #0E1F14; border:none; border-radius: 10px;
-    padding: 16px 32px; font-family:'Fraunces', serif; font-weight:700; font-size: 17px; cursor:pointer;
+    background: #fff; color: var(--danger); border:none; border-radius: 10px;
+    padding: 16px 32px; font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size: 17px; cursor:pointer;
   }
-  .overlay .sendnow { background:none; border:none; color: var(--slate); font-size:12px; margin-top:14px; text-decoration:underline; cursor:pointer; }
+  .overlay .sendnow { background:none; border:none; color: rgba(255,255,255,0.85); font-size:12px; margin-top:14px; text-decoration:underline; cursor:pointer; }
 
   .sent-card { text-align:center; }
-  .sent-card h2 { font-family:'Fraunces', serif; font-size: 20px; margin: 0 0 8px; color: var(--sage); }
-  .sent-card p { color: var(--slate); font-size: 13px; line-height:1.5; }
+  .sent-card h2 { font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size: 20px; margin: 0 0 8px; color: #fff; }
+  .sent-card p { color: rgba(255,255,255,0.9); font-size: 13px; line-height:1.5; }
 </style>
 </head>
 <body>
   <div class="wrap">
-    <p class="eyebrow">Where I Am — Emergency</p>
+    <p class="eyebrow">I'm Here! — Emergency</p>
     <h1>SOS</h1>
     <p class="sub">Texts your location to your saved contacts. Nothing here touches any server — it's entirely on this device.</p>
 
@@ -114,7 +116,7 @@
     <div class="panel">
       <h2>Your name (optional)</h2>
       <p class="desc">Added to the SOS so recipients instantly know it's from you.</p>
-      <input type="text" id="senderName" placeholder="e.g. James" maxlength="40" style="width:100%; background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; color: var(--paper); font-family:'Inter', sans-serif; font-size: 13px;">
+      <input type="text" id="senderName" placeholder="e.g. James" maxlength="40" style="width:100%; background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; color: var(--navy); font-family:'Inter', sans-serif; font-size: 13px;">
     </div>
 
     <div class="panel">
@@ -130,7 +132,7 @@
     </div>
 
     <p class="note">Pressing send opens your phone's own texting app with the message ready to go — you still tap Send there. No browser can send texts on its own.</p>
-    <a class="backlink" href="share.html">&larr; Back to sharing</a>
+    <a class="backlink" href="index.html">&larr; Back to home</a>
   </div>
 
   <div class="overlay" id="overlay">
@@ -139,7 +141,7 @@
       <p id="overlayMsg">Sending SOS to your contacts…</p>
       <button class="cancel" id="cancelBtn">Cancel</button>
       <div><button class="sendnow" id="sendNowBtn">Send immediately instead</button></div>
-      <p id="voiceStatus" style="display:none; margin-top:14px; color:var(--gold); font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.06em;">Listening — say "Send" or "Cancel"</p>
+      <p id="voiceStatus" style="display:none; margin-top:14px; color:#fff; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.06em;">Listening — say "Send" or "Cancel"</p>
     </div>
   </div>
 
