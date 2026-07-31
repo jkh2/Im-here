@@ -52,7 +52,48 @@ Your location isn't tracked continuously in the background. Each check-in takes 
 
 ## License
 
-Source-available under MIT + Commons Clause — free to use, read, modify, and share, but selling it or building a paid product/service around it requires a separate agreement with the author first. See `LICENSE` for the full terms and contact info.
+## License
+
+### Free noncommercial use
+
+The I’m Here! source code is source-available under the **PolyForm Noncommercial License 1.0.0**.
+
+You may view, study, test, modify, and use the source code for personal, educational, research, experimental, hobby, and other noncommercial purposes, subject to the full terms contained in the `LICENSE` file.
+
+This means you are welcome to:
+
+* Use the project to learn how it works
+* Experiment with the source code
+* Modify it for personal or noncommercial purposes
+* Study or demonstrate its design and functionality
+* Contribute improvements or report issues
+
+### Commercial use requires approval
+
+The public license does not authorize commercial use.
+
+You may not sell, commercially rebrand, white-label, host for payment, license, monetize, or incorporate this Software into a paid product or service without a separate written commercial agreement.
+
+Commercial licenses are available only to partners approved in writing by the Licensor.
+
+Commercial licensing inquiries:
+
+**James Keith Harwood II**
+**[jameskharwood2@gmail.com](mailto:jameskharwood2@gmail.com)**
+
+### Branding
+
+The source-code license does not grant permission to use the **I’m Here!** name, logo, visual identity, or other associated branding.
+
+Modified versions must not claim or imply that they are official versions of I’m Here!, endorsed by the project, or produced by an approved partner without written authorization.
+
+### Using the hosted app
+
+The publicly hosted I’m Here! application is currently available for people to use without charge.
+
+Using the hosted application does not grant any rights to commercially reproduce, rebrand, sell, or operate the underlying Software. Use of the hosted application may also be governed by separate Terms of Use and a Privacy Policy.
+
+See `LICENSE` for the complete source-code license terms.
 
 ## Under the hood
 
