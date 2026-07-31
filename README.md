@@ -1,3 +1,5 @@
+![I'm Here! promotional image](image1.png)
+
 # I'm Here!
 
 **Repo:** https://github.com/jkh2/Im-here
