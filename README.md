@@ -3,7 +3,7 @@
 # Where I Am
 
 **Repo:** https://github.com/jkh2/Im-here
-**Live demo:** https://jkh2.github.io/Im-here/ (find-someone page — open `share.html` from the same repo to try sending a share)
+**Live demo:** https://jkh2.github.io/Im-here/
 
 A live location share for the moments you want someone to be able to find you — a road trip, a flight, a hike, picking up a kid from an event. No account, no app download, no ongoing tracking relationship. You share for a set window of time, on your terms, and then it's over.
 
