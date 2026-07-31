@@ -1,44 +1,67 @@
-"Commons Clause" License Condition v1.0
+# I’m Here! Source Code License Notice
 
-The Software is provided to you by the Licensor under the License, as defined below, subject to the following condition.
+Copyright © 2026 James Keith Harwood II. All rights reserved except as expressly granted under the applicable license.
 
-Without limiting other conditions in the License, the grant of rights under the License will not include, and the License does not grant to you, the right to Sell the Software.
+## Public License
 
-For purposes of the foregoing, "Sell" means practicing any or all of the rights granted to you under the License to provide to third parties, for a fee or other consideration (including without limitation fees for hosting or consulting/support services related to the Software), a product or service whose value derives, entirely or substantially, from the functionality of the Software. Any license notice or attribution required by the License must also include this Commons Clause License Condition notice.
+The I’m Here! software and source code are made available under the **PolyForm Noncommercial License 1.0.0**.
 
-If you want to Sell the Software, or otherwise build a paid product or service around it, contact the Licensor first to arrange a separate commercial agreement.
+Official license terms:
 
-Software: Where I Am
-License: MIT
-Licensor: James Keith Harwood II
-Contact: jameskharwood2@gmail.com
+`https://polyformproject.org/licenses/noncommercial/1.0.0`
 
----
+The official PolyForm license terms control if this summary conflicts with them.
 
-MIT License
+## Permitted Noncommercial Uses
 
-Copyright (c) 2026 James Keith Harwood II
+Subject to the PolyForm Noncommercial License, you may use the Software without charge for purposes such as:
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+* Personal use
+* Learning and education
+* Research and experimentation
+* Testing and evaluation
+* Hobby projects
+* Noncommercial modification and development
+* Noncommercial sharing and distribution
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+You must preserve the applicable copyright and license notices when sharing copies or modified versions.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+## Commercial Use
 
-Note: the MIT License text above grants a right to "sell" copies of the
-Software on its own — the Commons Clause condition at the top of this file
-specifically overrides and withdraws that one right, while leaving every
-other MIT permission (use, copy, modify, merge, publish, distribute,
-sublicense) intact.
+This public license does not authorize commercial use.
+
+Commercial use requires a separate written commercial license from the Licensor. This includes, without limitation:
+
+* Selling or licensing the Software
+* Rebranding or white-labeling the Software for commercial distribution
+* Offering the Software as a paid product or service
+* Charging for hosted access to the Software
+* Including the Software in a monetized product or commercial platform
+* Using the Software to provide paid services to third parties
+* Distributing a commercially branded derivative version
+* Commercially exploiting modified versions or substantial portions of the Software
+
+Commercial authorization is available only to partners expressly approved in writing by the Licensor. Permission is not granted through silence, informal discussions, prior dealings, or access to the source code.
+
+To request an approved-partner or commercial license, contact:
+
+James Keith Harwood II
+`jameskharwood2@gmail.com`
+
+## Branding and Trademarks
+
+The public source-code license does not grant permission to use the names **I’m Here!**, **Sentinel AI Systems**, or any associated logos, icons, slogans, trade dress, or other branding.
+
+Modified or redistributed versions must not suggest that they are official versions, approved partners, or endorsed products unless written authorization has been provided by the Licensor.
+
+## Required Notices
+
+Required Notice: Copyright © 2026 James Keith Harwood II.
+
+Required Notice: The I’m Here! name, associated logos, and related branding are not licensed for use in commercial derivatives without written authorization.
+
+Required Notice: Commercial use requires a separate written agreement with James Keith Harwood II.
+
+## End-User Access
+
+Use of the publicly hosted I’m Here! application is governed by the application’s separate Terms of Use and Privacy Policy. The source-code license does not govern the collection, processing, storage, sharing, or deletion of user location information.
