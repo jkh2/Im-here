@@ -76,10 +76,17 @@
   .leaflet-popup-tip { background: var(--panel); }
   .popup-label { font-family:'Fraunces',serif; font-weight:700; font-size:14px; margin:0 0 4px; }
   .popup-meta { font-family:'IBM Plex Mono',monospace; font-size:11px; color: var(--slate); }
+  .sos-link {
+    position: fixed; top: 16px; right: 16px; z-index: 2000;
+    background: var(--danger); color: #fff; text-decoration:none;
+    font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
+    padding: 8px 12px; border-radius: 999px; box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+  }
 </style>
 </head>
 <body>
   <div id="map"></div>
+  <a class="sos-link" href="sos.html">SOS</a>
 
   <div class="hud" id="hud">
     <div class="brand">Where I Am<span>.</span></div>
