@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergency SOS — Where I Am</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #10221F; --panel: #16302B; --panel-2: #1C3B34;
+    --gold: #E3A857; --coral: #E2725B; --sage: #7FA98C;
+    --paper: #F3EFE6; --slate: #9CB0A8; --danger: #C94C4C; --border: #234139;
+  }
+  * { box-sizing: border-box; }
+  html,body { margin:0; padding:0; }
+  body {
+    background: radial-gradient(ellipse at top, #1F2A17 0%, var(--ink) 60%);
+    color: var(--paper); font-family:'Inter', sans-serif;
+    min-height: 100vh; padding: 24px; display:flex; align-items:center; justify-content:center;
+  }
+  .wrap { width:100%; max-width: 460px; }
+  .eyebrow { font-family:'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--danger); margin: 0 0 8px; text-align:center; }
+  h1 { font-family:'Fraunces', serif; font-weight:700; font-size: 26px; margin: 0 0 6px; text-align:center; }
+  .sub { color: var(--slate); font-size: 13px; text-align:center; margin: 0 0 24px; line-height:1.5; }
+
+  .sos-btn {
+    width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px; display:block;
+    background: radial-gradient(circle at 35% 30%, #E0736A, var(--danger));
+    border: none; color: #fff; font-family:'Fraunces', serif; font-weight:700; font-size: 24px;
+    letter-spacing: 0.04em; box-shadow: 0 0 0 8px rgba(201,76,79,0.15), 0 20px 50px rgba(0,0,0,0.5);
+    cursor: pointer;
+  }
+  .sos-btn:active { transform: scale(0.97); }
+
+  .panel {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 16px;
+    padding: 22px; margin-bottom: 16px;
+  }
+  .panel h2 { font-family:'Fraunces', serif; font-size:16px; margin: 0 0 10px; }
+  .panel .desc { color: var(--slate); font-size: 12px; line-height:1.5; margin: 0 0 14px; }
+
+  .contact-row { display:flex; gap:8px; margin-bottom: 10px; align-items:center; }
+  .contact-row input {
+    background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 12px; color: var(--paper); font-family:'Inter', sans-serif; font-size: 13px;
+  }
+  .contact-row .nameInput { flex: 1; }
+  .contact-row .phoneInput { flex: 1.2; }
+  .contact-row button {
+    background: transparent; border: 1px solid var(--border); color: var(--slate);
+    border-radius: 8px; padding: 8px 10px; cursor: pointer; font-size: 12px;
+  }
+  .add-row { display:flex; gap:8px; }
+  .add-row input {
+    background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 12px; color: var(--paper); font-family:'Inter', sans-serif; font-size: 13px;
+  }
+  #contactName { flex:1; } #contactPhone { flex:1.2; }
+  .add-row button {
+    background: var(--gold); color: #241705; border:none; border-radius: 8px;
+    padding: 10px 14px; font-family:'Fraunces', serif; font-weight:700; font-size: 13px; cursor:pointer;
+  }
+  .empty-note { color: var(--slate); font-size: 12px; font-style: italic; }
+
+  .shake-status { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .shake-status button {
+    background: var(--panel-2); border: 1px solid var(--border); color: var(--paper);
+    border-radius: 8px; padding: 10px 14px; font-family:'Inter', sans-serif; font-size: 13px; cursor:pointer;
+  }
+  .shake-status button.on { border-color: var(--sage); color: var(--sage); }
+
+  .note { font-size: 11px; color: var(--slate); line-height:1.5; text-align:center; margin-top: 10px; }
+  .backlink { display:block; text-align:center; margin-top: 18px; color: var(--slate); font-size: 12px; text-decoration:none; }
+  .backlink:hover { color: var(--gold); }
+
+  .overlay {
+    position: fixed; inset:0; background: rgba(16,34,31,0.97); z-index: 2000;
+    display:none; align-items:center; justify-content:center; padding: 24px; text-align:center;
+  }
+  .overlay.visible { display:flex; }
+  .overlay .count { font-family:'Fraunces', serif; font-size: 80px; font-weight:700; color: var(--danger); margin: 0 0 10px; }
+  .overlay p { color: var(--paper); font-size: 15px; margin: 0 0 24px; }
+  .overlay .cancel {
+    background: var(--sage); color: #0E1F14; border:none; border-radius: 10px;
+    padding: 16px 32px; font-family:'Fraunces', serif; font-weight:700; font-size: 17px; cursor:pointer;
+  }
+  .overlay .sendnow { background:none; border:none; color: var(--slate); font-size:12px; margin-top:14px; text-decoration:underline; cursor:pointer; }
+
+  .sent-card { text-align:center; }
+  .sent-card h2 { font-family:'Fraunces', serif; font-size: 20px; margin: 0 0 8px; color: var(--sage); }
+  .sent-card p { color: var(--slate); font-size: 13px; line-height:1.5; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="eyebrow">Where I Am — Emergency</p>
+    <h1>SOS</h1>
+    <p class="sub">Texts your location to your saved contacts. Nothing here touches any server — it's entirely on this device.</p>
+
+    <button class="sos-btn" id="sosBtn">SEND<br>SOS</button>
+
+    <div class="panel">
+      <div class="shake-status">
+        <div>
+          <h2 style="margin-bottom:2px;">Shake to trigger</h2>
+          <p class="desc" style="margin:0;">Shake your phone hard 3 times to fire the same alert hands-free.</p>
+        </div>
+        <button id="shakeToggle">Enable</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Your name (optional)</h2>
+      <p class="desc">Added to the SOS so recipients instantly know it's from you.</p>
+      <input type="text" id="senderName" placeholder="e.g. James" maxlength="40" style="width:100%; background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; color: var(--paper); font-family:'Inter', sans-serif; font-size: 13px;">
+    </div>
+
+    <div class="panel">
+      <h2>Emergency contacts</h2>
+      <p class="desc">Saved only in this browser, on this device — never uploaded anywhere.</p>
+      <div id="contactList"></div>
+      <p class="empty-note" id="emptyNote" style="display:none;">No contacts yet — add at least one before SOS can send anything.</p>
+      <div class="add-row">
+        <input type="text" id="contactName" placeholder="Name">
+        <input type="tel" id="contactPhone" placeholder="Phone number">
+        <button id="addContactBtn">Add</button>
+      </div>
+    </div>
+
+    <p class="note">Pressing send opens your phone's own texting app with the message ready to go — you still tap Send there. No browser can send texts on its own.</p>
+    <a class="backlink" href="share.html">&larr; Back to sharing</a>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div>
+      <p class="count" id="countText">3</p>
+      <p id="overlayMsg">Sending SOS to your contacts…</p>
+      <button class="cancel" id="cancelBtn">Cancel</button>
+      <div><button class="sendnow" id="sendNowBtn">Send immediately instead</button></div>
+      <p id="voiceStatus" style="display:none; margin-top:14px; color:var(--gold); font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.06em;">Listening — say "Send" or "Cancel"</p>
+    </div>
+  </div>
+
+<script>
+  const CONTACTS_KEY = 'whereiam_sos_contacts';
+  const NAME_KEY = 'whereiam_sos_name';
+
+  const senderNameEl = document.getElementById('senderName');
+  senderNameEl.value = localStorage.getItem(NAME_KEY) || '';
+  senderNameEl.addEventListener('input', () => {
+    try { localStorage.setItem(NAME_KEY, senderNameEl.value.trim()); } catch (e) {}
+  });
+
+  function sosPrefix() {
+    const name = (senderNameEl.value || '').trim();
+    return name ? 'SOS from ' + name + ' - I need help.' : 'SOS - I need help.';
+  }
+
+  function getContacts() {
+    try { return JSON.parse(localStorage.getItem(CONTACTS_KEY)) || []; }
+    catch (e) { return []; }
+  }
+  function saveContacts(list) {
+    try {
+      localStorage.setItem(CONTACTS_KEY, JSON.stringify(list));
+      return true;
+    } catch (e) {
+      alert('Could not save contacts on this device. If you are in private browsing mode, try a normal window — saved contacts need local storage.');
+      return false;
+    }
+  }
+
+  const contactList = document.getElementById('contactList');
+  const emptyNote = document.getElementById('emptyNote');
+
+  function renderContacts() {
+    const contacts = getContacts();
+    contactList.innerHTML = '';
+    emptyNote.style.display = contacts.length === 0 ? 'block' : 'none';
+    contacts.forEach((c, i) => {
+      const row = document.createElement('div');
+      row.className = 'contact-row';
+
+      const nameSpan = document.createElement('span');
+      nameSpan.style.flex = '1';
+      nameSpan.textContent = c.name || 'Unnamed';
+
+      const phoneSpan = document.createElement('span');
+      phoneSpan.style.cssText = "flex:1.2; color:var(--slate); font-family:'IBM Plex Mono',monospace; font-size:12px;";
+      phoneSpan.textContent = c.phone;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.textContent = 'Remove';
+      removeBtn.addEventListener('click', () => {
+        const list = getContacts();
+        list.splice(i, 1);
+        saveContacts(list);
+        renderContacts();
+      });
+
+      row.appendChild(nameSpan);
+      row.appendChild(phoneSpan);
+      row.appendChild(removeBtn);
+      contactList.appendChild(row);
+    });
+  }
+  renderContacts();
+
+  document.getElementById('addContactBtn').addEventListener('click', () => {
+    const nameEl = document.getElementById('contactName');
+    const phoneEl = document.getElementById('contactPhone');
+    const phone = phoneEl.value.trim();
+    const digitCount = (phone.match(/\d/g) || []).length;
+    if (digitCount < 7) {
+      alert('Please enter a valid phone number (at least 7 digits).');
+      return;
+    }
+    const list = getContacts();
+    list.push({ name: nameEl.value.trim(), phone });
+    if (saveContacts(list)) {
+      nameEl.value = ''; phoneEl.value = '';
+      renderContacts();
+    }
+  });
+
+  // --- Trigger + cancel-window flow ---
+  const overlay = document.getElementById('overlay');
+  const countText = document.getElementById('countText');
+  let cancelTimeout = null, countdownInterval = null, secondsLeft = 3;
+  let armed = false;      // a countdown is currently running
+  let sosFired = false;   // the SOS has been sent this cycle
+
+  function armTrigger() {
+    if (armed || sosFired) return;   // ignore repeat triggers (shake + tap, double-shake, etc.)
+    if (getContacts().length === 0) {
+      alert('Add at least one emergency contact first.');
+      return;
+    }
+    armed = true;
+    secondsLeft = 3;
+    countText.textContent = secondsLeft;
+    countText.style.display = 'block';
+    document.getElementById('cancelBtn').style.display = 'inline-block';
+    document.getElementById('sendNowBtn').style.display = 'inline';
+    document.getElementById('overlayMsg').textContent = 'Sending SOS to your contacts…';
+    overlay.classList.add('visible');
+    countdownInterval = setInterval(() => {
+      secondsLeft--;
+      if (secondsLeft <= 0) { clearInterval(countdownInterval); }
+      else { countText.textContent = secondsLeft; }
+    }, 1000);
+    cancelTimeout = setTimeout(fireSOS, 3000);
+    startVoiceListening();
+  }
+
+  function cancelTrigger() {
+    clearTimeout(cancelTimeout);
+    clearInterval(countdownInterval);
+    overlay.classList.remove('visible');
+    stopVoiceListening();
+    armed = false;
+  }
+
+  document.getElementById('cancelBtn').addEventListener('click', cancelTrigger);
+  document.getElementById('sendNowBtn').addEventListener('click', () => {
+    clearTimeout(cancelTimeout);
+    clearInterval(countdownInterval);
+    stopVoiceListening();
+    fireSOS();
+  });
+
+  function smsHandoff(body) {
+    const numbers = getContacts().map(c => c.phone).join(',');
+    window.location.href = 'sms:' + numbers + '?body=' + encodeURIComponent(body);
+    overlay.innerHTML = '<div class="sent-card"><h2>Ready to send</h2><p>Your texting app should now be open with the message filled in — tap Send there to finish.</p></div>';
+  }
+
+  // --- Voice control for the cancel window only ---
+  // This can say "Send" for you instead of tapping, and skip straight to the
+  // native texting app — but it can't tap Send inside that app for you; no
+  // web page can do that regardless of how it's triggered.
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognizer = null;
+
+  function startVoiceListening() {
+    if (!SpeechRec) return;
+    const voiceStatus = document.getElementById('voiceStatus');
+    try {
+      recognizer = new SpeechRec();
+      recognizer.continuous = true;
+      recognizer.interimResults = false;
+      recognizer.lang = 'en-US';
+      recognizer.onresult = (event) => {
+        const said = event.results[event.results.length - 1][0].transcript.toLowerCase();
+        if (said.includes('send')) {
+          stopVoiceListening();
+          clearTimeout(cancelTimeout);
+          clearInterval(countdownInterval);
+          fireSOS();
+        } else if (said.includes('cancel') || said.includes('stop')) {
+          cancelTrigger();
+        }
+      };
+      recognizer.onerror = () => { voiceStatus.style.display = 'none'; };
+      recognizer.start();
+      voiceStatus.style.display = 'block';
+    } catch (e) {
+      voiceStatus.style.display = 'none';
+    }
+  }
+
+  function stopVoiceListening() {
+    if (recognizer) {
+      try { recognizer.stop(); } catch (e) {}
+      recognizer = null;
+    }
+    document.getElementById('voiceStatus').style.display = 'none';
+  }
+
+  function fireSOS() {
+    if (sosFired) return;      // guard against double-fire (voice + timer, shake + tap, etc.)
+    sosFired = true;
+    stopVoiceListening();
+    overlay.classList.add('visible');
+    document.getElementById('overlayMsg').textContent = 'Getting your location…';
+    document.getElementById('countText').style.display = 'none';
+    document.getElementById('cancelBtn').style.display = 'none';
+    document.getElementById('sendNowBtn').style.display = 'none';
+
+    let handedOff = false;
+    function handoffOnce(body) {
+      if (handedOff) return;
+      handedOff = true;
+      smsHandoff(body);
+    }
+
+    // Hard backstop: if location hasn't come back in 6s, send the SOS anyway
+    // without coordinates. In an emergency, a text that says "I need help" with
+    // no map pin still beats a frozen screen waiting on GPS.
+    const backstop = setTimeout(() => {
+      handoffOnce(sosPrefix() + ' (Location unavailable — could not get a GPS fix in time.)');
+    }, 7000);
+
+    if (!navigator.geolocation) {
+      clearTimeout(backstop);
+      handoffOnce(sosPrefix() + ' (This device could not provide a location.)');
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        clearTimeout(backstop);
+        const lat = pos.coords.latitude, lng = pos.coords.longitude;
+        const url = 'https://maps.google.com/?q=' + lat + ',' + lng;
+        handoffOnce(sosPrefix() + ' My location: ' + url);
+      },
+      err => {
+        clearTimeout(backstop);
+        handoffOnce(sosPrefix() + ' (Could not get an exact location: ' + err.message + ')');
+      },
+      { enableHighAccuracy: true, timeout: 6000, maximumAge: 30000 }
+    );
+  }
+
+  document.getElementById('sosBtn').addEventListener('click', armTrigger);
+
+  // Opening this page with ?auto=1 arms it immediately — for OS-level shortcuts
+  // (e.g. a Samsung side-key double-press mapped straight to this URL).
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('auto') === '1') {
+    if (getContacts().length === 0) {
+      // Shortcut fired but there's nobody to text — make the fix obvious on-page
+      // instead of only flashing an alert that could be missed in a hurry.
+      const panel = document.getElementById('contactName');
+      if (panel) {
+        panel.focus();
+        panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      emptyNote.style.display = 'block';
+      emptyNote.textContent = 'Add an emergency contact here first — then the SOS shortcut will work.';
+    } else {
+      armTrigger();
+    }
+  }
+
+  // --- Shake detection ---
+  let shakeEnabled = false;
+  let lastX, lastY, lastZ, lastSampleTime = 0;
+  let shakeHits = 0, lastHitTime = 0;
+  const SHAKE_DELTA_THRESHOLD = 18;
+
+  function handleMotion(e) {
+    const acc = e.accelerationIncludingGravity || e.acceleration;
+    if (!acc || acc.x === null) return;
+    const now = Date.now();
+    if (now - lastSampleTime < 100) return;
+    if (lastX !== undefined) {
+      const delta = Math.abs(acc.x - lastX) + Math.abs(acc.y - lastY) + Math.abs(acc.z - lastZ);
+      if (delta > SHAKE_DELTA_THRESHOLD) {
+        shakeHits = (now - lastHitTime < 1500) ? shakeHits + 1 : 1;
+        lastHitTime = now;
+        if (shakeHits >= 3) {
+          shakeHits = 0;
+          armTrigger();
+        }
+      }
+    }
+    lastX = acc.x; lastY = acc.y; lastZ = acc.z; lastSampleTime = now;
+  }
+
+  const shakeToggle = document.getElementById('shakeToggle');
+  shakeToggle.addEventListener('click', () => {
+    if (shakeEnabled) return;
+    const DME = window.DeviceMotionEvent;
+    if (DME && typeof DME.requestPermission === 'function') {
+      DME.requestPermission().then(state => {
+        if (state === 'granted') { window.addEventListener('devicemotion', handleMotion); markShakeOn(); }
+        else { alert('Motion access was denied — you can still use the SOS button.'); }
+      }).catch(() => alert('Could not enable shake detection on this browser.'));
+    } else if (DME) {
+      window.addEventListener('devicemotion', handleMotion);
+      markShakeOn();
+    } else {
+      alert('This browser does not support motion detection — use the SOS button instead.');
+    }
+  });
+
+  function markShakeOn() {
+    shakeEnabled = true;
+    shakeToggle.textContent = 'On';
+    shakeToggle.classList.add('on');
+  }
+</script>
+</body>
+</html>
