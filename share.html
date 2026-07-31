@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Share Your Trip — Where I Am</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #10221F; --panel: #16302B; --panel-2: #1C3B34;
+    --gold: #E3A857; --coral: #E2725B; --sage: #7FA98C;
+    --paper: #F3EFE6; --slate: #9CB0A8; --danger: #C94C4C; --border: #234139;
+  }
+  * { box-sizing: border-box; }
+  html,body { margin:0; padding:0; }
+  body {
+    background: radial-gradient(ellipse at top, #17332E 0%, var(--ink) 60%);
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display:flex; align-items:center; justify-content:center;
+    padding: 24px;
+  }
+  .card {
+    width: 100%; max-width: 460px;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 18px;
+    padding: 32px 28px; box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+  }
+  .eyebrow { font-family:'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin: 0 0 8px; }
+  h1 { font-family:'Fraunces', serif; font-weight:700; font-size: 28px; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .sub { color: var(--slate); font-size: 14px; margin: 0 0 26px; line-height:1.55; }
+  .field { margin-bottom: 18px; }
+  .field label { display:block; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: var(--slate); margin-bottom: 8px; }
+  .field input, .field select {
+    width:100%; background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 12px 14px; color: var(--paper); font-family:'Inter', sans-serif; font-size: 14px;
+    appearance: none;
+  }
+  .field input::placeholder { color: var(--slate); }
+  .status-row { display:flex; align-items:center; gap:10px; margin: 20px 0; }
+  .dot { width:10px; height:10px; border-radius:50%; background: var(--slate); box-shadow: 0 0 0 4px rgba(156,176,168,0.15); }
+  .dot.active { background: var(--gold); box-shadow: 0 0 0 4px rgba(227,168,87,0.2); animation: pulse 1.8s ease-in-out infinite; }
+  .dot.ended { background: var(--sage); box-shadow: 0 0 0 4px rgba(127,169,140,0.2); }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.45;} }
+  @media (prefers-reduced-motion: reduce) { .dot.active { animation: none; } }
+  .status-label { font-family:'IBM Plex Mono', monospace; font-size:13px; color: var(--slate); }
+  .readout {
+    background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 18px; font-family:'IBM Plex Mono', monospace; font-size: 13px;
+    margin-bottom: 22px; display:grid; grid-template-columns: auto 1fr; gap: 6px 14px;
+  }
+  .readout .k { color: var(--slate); }
+  .readout .v { text-align:right; }
+  button {
+    width:100%; font-family:'Fraunces', serif; font-weight:700; font-size: 17px;
+    padding: 15px; border-radius: 10px; border: none; cursor:pointer;
+    transition: transform 0.1s ease, opacity 0.15s ease;
+  }
+  button:active { transform: scale(0.98); }
+  button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  #startBtn { background: var(--gold); color: #241705; }
+  #endBtn { background: transparent; color: var(--danger); border: 1px solid var(--danger); margin-top:10px; }
+  #endBtn[disabled], #startBtn[disabled] { opacity: 0.4; cursor: not-allowed; }
+  .error { color: var(--danger); font-size: 13px; margin-top: 12px; display:none; }
+
+  .stub {
+    margin-top: 24px; display:none;
+    background: var(--panel-2); border: 1px dashed var(--border); border-radius: 14px;
+    padding: 20px; position: relative;
+  }
+  .stub.visible { display:block; }
+  .stub .stub-eyebrow { font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color: var(--slate); margin:0 0 6px; }
+  .stub .code { font-family:'IBM Plex Mono', monospace; font-size: 30px; font-weight: 500; letter-spacing: 0.1em; color: var(--gold); margin: 0 0 6px; }
+  .stub .expiry { font-size: 12px; color: var(--slate); margin: 0 0 16px; }
+  .stub .perf { border-top: 1px dashed var(--border); margin: 0 0 16px; }
+  .share-row { display:flex; gap:8px; }
+  .share-row input {
+    flex:1; background: var(--ink); border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 12px; color: var(--paper); font-family:'IBM Plex Mono', monospace; font-size: 12px;
+  }
+  .share-row button { width: auto; padding: 10px 16px; background: var(--coral); color: #2A0E08; font-size: 13px; }
+  .note { font-size: 12px; color: var(--slate); margin-top: 18px; line-height:1.55; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <p class="eyebrow">Where I Am</p>
+    <h1>Share your trip</h1>
+    <p class="sub">Let the people you choose see exactly where you are, in real time — only if you hand them this code. Nobody else can find you.</p>
+
+    <div class="field">
+      <label for="durationSelect">How long should this stay active?</label>
+      <select id="durationSelect">
+        <option value="15">15 minutes</option>
+        <option value="60" selected>1 hour</option>
+        <option value="240">4 hours</option>
+        <option value="720">12 hours</option>
+        <option value="1440">24 hours</option>
+        <option value="2880">48 hours</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="intervalSelect">How often should we check in?</label>
+      <select id="intervalSelect">
+        <option value="1">Every 1 minute</option>
+        <option value="5" selected>Every 5 minutes</option>
+        <option value="15">Every 15 minutes</option>
+        <option value="30">Every 30 minutes</option>
+        <option value="60">Every 1 hour</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="labelInput">Trip note (optional)</label>
+      <input type="text" id="labelInput" placeholder="e.g. Driving to Denver" maxlength="60">
+    </div>
+
+    <div class="status-row">
+      <div class="dot" id="statusDot"></div>
+      <span class="status-label" id="statusLabel">Not sharing</span>
+    </div>
+
+    <div class="readout">
+      <span class="k">Lat</span><span class="v" id="latVal">—</span>
+      <span class="k">Lng</span><span class="v" id="lngVal">—</span>
+      <span class="k">Accuracy</span><span class="v" id="accVal">—</span>
+      <span class="k">Last check-in</span><span class="v" id="pushVal">—</span>
+    </div>
+
+    <button id="startBtn">Start sharing</button>
+    <button id="endBtn" disabled>Stop sharing</button>
+
+    <p class="error" id="errorMsg"></p>
+
+    <div class="stub" id="shareBlock">
+      <p class="stub-eyebrow">Your code — this is the only way to find you</p>
+      <p class="code" id="codeText">——————</p>
+      <p class="expiry" id="expiryText"></p>
+      <div class="perf"></div>
+      <div class="share-row">
+        <input type="text" id="shareLink" readonly>
+        <button id="copyBtn">Copy link</button>
+      </div>
+    </div>
+
+    <p class="note">This shows your exact location — unlike a public directory, only someone with this code can look you up. We only wake up your GPS at the check-in interval you picked, not continuously, so it's easy on your battery. Sharing stops automatically when the timer runs out, or any time you tap "Stop sharing."</p>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+  const SUPABASE_URL = 'https://eycxmnnbzbcjjnhkoetp.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_C9hem1wdDzYbtLAbgbK6ZQ_FlJYxlzo';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  const CODE_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  function genCode(len = 8) {
+    let out = '';
+    for (let i = 0; i < len; i++) out += CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)];
+    return out;
+  }
+
+  let code = sessionStorage.getItem('shareCode');
+  if (!code) {
+    code = genCode();
+    sessionStorage.setItem('shareCode', code);
+  }
+
+  let checkInTimer = null;
+  let expiryTimer = null;
+  let latest = null;
+  let channel = null;
+  let expiresAt = null;
+
+  const durationSelect = document.getElementById('durationSelect');
+  const intervalSelect = document.getElementById('intervalSelect');
+  const labelInput = document.getElementById('labelInput');
+  const statusDot = document.getElementById('statusDot');
+  const statusLabel = document.getElementById('statusLabel');
+  const latVal = document.getElementById('latVal');
+  const lngVal = document.getElementById('lngVal');
+  const accVal = document.getElementById('accVal');
+  const pushVal = document.getElementById('pushVal');
+  const startBtn = document.getElementById('startBtn');
+  const endBtn = document.getElementById('endBtn');
+  const errorMsg = document.getElementById('errorMsg');
+  const shareBlock = document.getElementById('shareBlock');
+  const codeText = document.getElementById('codeText');
+  const expiryText = document.getElementById('expiryText');
+  const shareLink = document.getElementById('shareLink');
+  const copyBtn = document.getElementById('copyBtn');
+
+  function setStatus(state) {
+    statusDot.className = 'dot ' + state;
+    statusLabel.textContent = state === 'active' ? 'Sharing — live'
+      : state === 'ended' ? 'Sharing stopped'
+      : 'Not sharing';
+  }
+
+  function formatCountdown(ms) {
+    if (ms <= 0) return 'expired';
+    const mins = Math.floor(ms / 60000);
+    const h = Math.floor(mins / 60), m = mins % 60;
+    return h > 0 ? `${h}h ${m}m remaining` : `${m}m remaining`;
+  }
+
+  function tickExpiry() {
+    if (!expiresAt) return;
+    const remaining = expiresAt.getTime() - Date.now();
+    expiryText.textContent = 'Expires in ' + formatCountdown(remaining);
+    if (remaining <= 0) endSharing();
+  }
+
+  async function pushLocation() {
+    if (!latest) return;
+    const { error } = await sb.rpc('upsert_share', {
+      p_code: code,
+      p_lat: latest.coords.latitude,
+      p_lng: latest.coords.longitude,
+      p_label: labelInput.value.trim() || null,
+      p_duration_minutes: parseInt(durationSelect.value, 10)
+    });
+    if (error) {
+      errorMsg.textContent = 'Sync error: ' + error.message;
+      errorMsg.style.display = 'block';
+      return;
+    }
+    errorMsg.style.display = 'none';
+    pushVal.textContent = new Date().toLocaleTimeString();
+    if (channel) {
+      channel.send({
+        type: 'broadcast', event: 'update',
+        payload: {
+          lat: latest.coords.latitude, lng: latest.coords.longitude,
+          label: labelInput.value.trim() || null, status: 'active',
+          updated_at: new Date().toISOString(), expires_at: expiresAt.toISOString(), is_live: true
+        }
+      });
+    }
+  }
+
+  function checkIn() {
+    if (!navigator.geolocation) {
+      errorMsg.textContent = 'This browser does not support location sharing.';
+      errorMsg.style.display = 'block';
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(pos => {
+      latest = pos;
+      latVal.textContent = pos.coords.latitude.toFixed(5);
+      lngVal.textContent = pos.coords.longitude.toFixed(5);
+      accVal.textContent = Math.round(pos.coords.accuracy) + ' m';
+      pushLocation();
+    }, onPositionError, { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 });
+  }
+
+  function onPositionError(err) {
+    errorMsg.textContent = 'Location error: ' + err.message;
+    errorMsg.style.display = 'block';
+  }
+
+  function endSharing() {
+    if (checkInTimer) clearInterval(checkInTimer);
+    if (expiryTimer) clearInterval(expiryTimer);
+    setStatus('ended');
+    startBtn.disabled = true;
+    endBtn.disabled = true;
+    durationSelect.disabled = false;
+    sb.rpc('end_share', { p_code: code });
+    if (channel) {
+      channel.send({ type: 'broadcast', event: 'update', payload: { status: 'ended', is_live: false } });
+    }
+  }
+
+  startBtn.addEventListener('click', () => {
+    if (!navigator.geolocation) {
+      errorMsg.textContent = 'This browser does not support location sharing.';
+      errorMsg.style.display = 'block';
+      return;
+    }
+    const minutes = parseInt(durationSelect.value, 10);
+    expiresAt = new Date(Date.now() + minutes * 60000);
+    durationSelect.disabled = true;
+
+    channel = sb.channel('share:' + code);
+    channel.subscribe();
+
+    setStatus('active');
+    startBtn.disabled = true;
+    endBtn.disabled = false;
+
+    codeText.textContent = code;
+    const url = new URL('index.html', window.location.href);
+    url.searchParams.set('code', code);
+    shareLink.value = url.toString();
+    shareBlock.classList.add('visible');
+
+    checkIn();
+    checkInTimer = setInterval(checkIn, parseInt(intervalSelect.value, 10) * 60000);
+    expiryTimer = setInterval(tickExpiry, 1000);
+    tickExpiry();
+  });
+
+  intervalSelect.addEventListener('change', () => {
+    if (!checkInTimer) return;
+    clearInterval(checkInTimer);
+    checkInTimer = setInterval(checkIn, parseInt(intervalSelect.value, 10) * 60000);
+  });
+
+  endBtn.addEventListener('click', endSharing);
+
+  copyBtn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(shareLink.value);
+      copyBtn.textContent = 'Copied';
+      setTimeout(() => copyBtn.textContent = 'Copy link', 1500);
+    } catch (e) {
+      shareLink.select();
+    }
+  });
+</script>
+</body>
+</html>
