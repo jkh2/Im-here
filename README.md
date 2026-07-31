@@ -1,9 +1,7 @@
-![I'm-here Banner](image1.png)
-
-# Where I Am
+# I'm Here!
 
 **Repo:** https://github.com/jkh2/Im-here
-**Live demo:** https://jkh2.github.io/Im-here/ (find-someone page — open `share.html` from the same repo to try sending a share)
+**Live demo:** https://jkh2.github.io/Im-here/ (landing page — choose "I'm traveling" to share, or "I'm finding someone" to look up a code)
 
 A live location share for the moments you want someone to be able to find you — a road trip, a flight, a hike, picking up a kid from an event. No account, no app download, no ongoing tracking relationship. You share for a set window of time, on your terms, and then it's over.
 
@@ -18,14 +16,14 @@ Turn it on before you go, share a short code with whoever you want to be able to
 ## How it works
 
 **If you're sharing your location:**
-1. Open `share.html`.
+1. Open the app and tap "I'm traveling."
 2. Pick how long to share (15 min – 48 hr) and how often to check in (1 min – 1 hr — more frequent drains your battery faster, less frequent is easier on it).
 3. Optionally add a short note, like "Driving to Denver."
 4. Tap "Start sharing." You'll get an 8-character code and a direct link — text either one to whoever you want to find you.
 5. Tap "Stop sharing" any time you're done early.
 
 **If you're looking for someone:**
-1. Open the link they sent you, or open `index.html` and type in the code they gave you.
+1. Open the link they sent you (it takes you straight to the map), or open the app, tap "I'm finding someone," and type in the code they gave you.
 2. You'll see their current location on a map, their trip note if they added one, how long ago they last checked in, and when the share is set to expire.
 3. The map updates on its own as they check in — no refreshing needed.
 4. Once the share ends, the same link just shows that it's over.
@@ -58,7 +56,7 @@ Source-available under MIT + Commons Clause — free to use, read, modify, and s
 
 ## Under the hood
 
-Three static pages — `share.html`, `index.html`, and `sos.html` — the first two backed by a small Supabase project, the last entirely local. No server to run, no build step; push all three files to any static host (GitHub Pages, Netlify, wherever) with `index.html` at the root so it's what people land on by default.
+Four static pages — `index.html` (landing), `share.html`, `find.html`, and `sos.html` — the sharing pair backed by a small Supabase project, the SOS page entirely local. No server to run, no build step; push all four files to any static host (GitHub Pages, Netlify, wherever) with `index.html` at the root so it's the front door people land on.
 
 **Security model:** the database table behind this has no public read or write access at all. Every action — starting a share, checking in, ending a share, or looking one up — goes through a dedicated database function that requires the exact code. There's no way to list, scan, or browse every active share; the code isn't just a suggestion, it's the actual access control. Live updates travel over a private channel named after the code, so even the "live" part of live-tracking is only reachable by someone who already has it.
 
