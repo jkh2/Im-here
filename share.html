@@ -3,21 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Share Your Trip — Where I Am</title>
+<title>Share Your Trip — I'm Here!</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #10221F; --panel: #16302B; --panel-2: #1C3B34;
-    --gold: #E3A857; --coral: #E2725B; --sage: #7FA98C;
-    --paper: #F3EFE6; --slate: #9CB0A8; --danger: #C94C4C; --border: #234139;
+    --cream: #FBEFE0; --cream-2: #F6E4CF;
+    --navy: #14233A; --navy-soft: #33445E;
+    --coral: #E8624A; --coral-dark: #C94A34;
+    --card: #FFFFFF; --panel-2: #FBF5EC; --line: #EAD9C4;
+    --slate: #7B7264; --sage: #3F9E6E; --danger: #C94A34;
   }
   * { box-sizing: border-box; }
   html,body { margin:0; padding:0; }
   body {
-    background: radial-gradient(ellipse at top, #17332E 0%, var(--ink) 60%);
-    color: var(--paper);
+    background: linear-gradient(160deg, #FCF4E8 0%, var(--cream) 45%, var(--cream-2) 100%);
+    color: var(--navy);
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
     display:flex; align-items:center; justify-content:center;
@@ -25,74 +27,75 @@
   }
   .card {
     width: 100%; max-width: 460px;
-    background: var(--panel); border: 1px solid var(--border); border-radius: 18px;
-    padding: 32px 28px; box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+    background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+    padding: 32px 28px; box-shadow: 0 12px 40px rgba(20,35,58,0.10);
   }
-  .eyebrow { font-family:'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin: 0 0 8px; }
-  h1 { font-family:'Fraunces', serif; font-weight:700; font-size: 28px; margin: 0 0 6px; letter-spacing: -0.01em; }
-  .sub { color: var(--slate); font-size: 14px; margin: 0 0 26px; line-height:1.55; }
+  .eyebrow { font-family:'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--coral); margin: 0 0 8px; }
+  h1 { font-family:'Plus Jakarta Sans', sans-serif; font-weight:800; font-size: 28px; margin: 0 0 6px; letter-spacing: -0.02em; color: var(--navy); }
+  .sub { color: var(--navy-soft); font-size: 14px; margin: 0 0 26px; line-height:1.55; }
   .field { margin-bottom: 18px; }
   .field label { display:block; font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color: var(--slate); margin-bottom: 8px; }
   .field input, .field select {
-    width:100%; background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px;
-    padding: 12px 14px; color: var(--paper); font-family:'Inter', sans-serif; font-size: 14px;
+    width:100%; background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 14px; color: var(--navy); font-family:'Inter', sans-serif; font-size: 14px;
     appearance: none;
   }
   .field input::placeholder { color: var(--slate); }
   .status-row { display:flex; align-items:center; gap:10px; margin: 20px 0; }
-  .dot { width:10px; height:10px; border-radius:50%; background: var(--slate); box-shadow: 0 0 0 4px rgba(156,176,168,0.15); }
-  .dot.active { background: var(--gold); box-shadow: 0 0 0 4px rgba(227,168,87,0.2); animation: pulse 1.8s ease-in-out infinite; }
-  .dot.ended { background: var(--sage); box-shadow: 0 0 0 4px rgba(127,169,140,0.2); }
+  .dot { width:10px; height:10px; border-radius:50%; background: var(--slate); box-shadow: 0 0 0 4px rgba(123,114,100,0.15); }
+  .dot.active { background: var(--coral); box-shadow: 0 0 0 4px rgba(232,98,74,0.2); animation: pulse 1.8s ease-in-out infinite; }
+  .dot.ended { background: var(--sage); box-shadow: 0 0 0 4px rgba(63,158,110,0.2); }
   @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.45;} }
   @media (prefers-reduced-motion: reduce) { .dot.active { animation: none; } }
   .status-label { font-family:'IBM Plex Mono', monospace; font-size:13px; color: var(--slate); }
   .readout {
-    background: var(--panel-2); border: 1px solid var(--border); border-radius: 10px;
+    background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px;
     padding: 16px 18px; font-family:'IBM Plex Mono', monospace; font-size: 13px;
     margin-bottom: 22px; display:grid; grid-template-columns: auto 1fr; gap: 6px 14px;
   }
   .readout .k { color: var(--slate); }
-  .readout .v { text-align:right; }
+  .readout .v { text-align:right; color: var(--navy); }
   button {
-    width:100%; font-family:'Fraunces', serif; font-weight:700; font-size: 17px;
+    width:100%; font-family:'Plus Jakarta Sans', sans-serif; font-weight:700; font-size: 17px;
     padding: 15px; border-radius: 10px; border: none; cursor:pointer;
     transition: transform 0.1s ease, opacity 0.15s ease;
   }
   button:active { transform: scale(0.98); }
-  button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-  #startBtn { background: var(--gold); color: #241705; }
+  button:focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }
+  #startBtn { background: var(--coral); color: #fff; }
   #endBtn { background: transparent; color: var(--danger); border: 1px solid var(--danger); margin-top:10px; }
   #endBtn[disabled], #startBtn[disabled] { opacity: 0.4; cursor: not-allowed; }
   .error { color: var(--danger); font-size: 13px; margin-top: 12px; display:none; }
 
   .stub {
     margin-top: 24px; display:none;
-    background: var(--panel-2); border: 1px dashed var(--border); border-radius: 14px;
+    background: var(--panel-2); border: 1px dashed var(--line); border-radius: 14px;
     padding: 20px; position: relative;
   }
   .stub.visible { display:block; }
   .stub .stub-eyebrow { font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color: var(--slate); margin:0 0 6px; }
-  .stub .code { font-family:'IBM Plex Mono', monospace; font-size: 30px; font-weight: 500; letter-spacing: 0.1em; color: var(--gold); margin: 0 0 6px; }
+  .stub .code { font-family:'IBM Plex Mono', monospace; font-size: 30px; font-weight: 500; letter-spacing: 0.1em; color: var(--coral-dark); margin: 0 0 6px; }
   .stub .expiry { font-size: 12px; color: var(--slate); margin: 0 0 16px; }
-  .stub .perf { border-top: 1px dashed var(--border); margin: 0 0 16px; }
+  .stub .perf { border-top: 1px dashed var(--line); margin: 0 0 16px; }
   .share-row { display:flex; gap:8px; }
   .share-row input {
-    flex:1; background: var(--ink); border: 1px solid var(--border); border-radius: 8px;
-    padding: 10px 12px; color: var(--paper); font-family:'IBM Plex Mono', monospace; font-size: 12px;
+    flex:1; background: #fff; border: 1px solid var(--line); border-radius: 8px;
+    padding: 10px 12px; color: var(--navy); font-family:'IBM Plex Mono', monospace; font-size: 12px;
   }
-  .share-row button { width: auto; padding: 10px 16px; background: var(--coral); color: #2A0E08; font-size: 13px; }
-  .note { font-size: 12px; color: var(--slate); margin-top: 18px; line-height:1.55; }  .sos-link {
+  .share-row button { width: auto; padding: 10px 16px; background: var(--navy); color: #fff; font-size: 13px; }
+  .note { font-size: 12px; color: var(--slate); margin-top: 18px; line-height:1.55; }
+  .sos-link {
     position: fixed; top: 16px; right: 16px; z-index: 100;
-    background: var(--danger); color: #fff; text-decoration:none;
+    background: var(--coral); color: #fff; text-decoration:none;
     font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
-    padding: 8px 12px; border-radius: 999px; box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    padding: 8px 12px; border-radius: 999px; box-shadow: 0 6px 16px rgba(232,98,74,0.35);
   }
 </style>
 </head>
 <body>
   <a class="sos-link" href="sos.html">SOS</a>
   <div class="card">
-    <p class="eyebrow">Where I Am</p>
+    <p class="eyebrow">I'm Here!</p>
     <h1>Share your trip</h1>
     <p class="sub">Let the people you choose see exactly where you are, in real time — only if you hand them this code. Nobody else can find you.</p>
 
@@ -298,7 +301,7 @@
     endBtn.disabled = false;
 
     codeText.textContent = code;
-    const url = new URL('index.html', window.location.href);
+    const url = new URL('find.html', window.location.href);
     url.searchParams.set('code', code);
     shareLink.value = url.toString();
     shareBlock.classList.add('visible');
