@@ -3,7 +3,7 @@
 # Where I Am
 
 **Repo:** https://github.com/jkh2/Im-here
-**Live demo:** https://jkh2.github.io/Im-here/
+**Live demo:** https://jkh2.github.io/Im-here/ (find-someone page — open `share.html` from the same repo to try sending a share)
 
 A live location share for the moments you want someone to be able to find you — a road trip, a flight, a hike, picking up a kid from an event. No account, no app download, no ongoing tracking relationship. You share for a set window of time, on your terms, and then it's over.
 
@@ -32,6 +32,18 @@ Turn it on before you go, share a short code with whoever you want to be able to
 
 No sign-up on either end. Works the same in any browser, on any phone.
 
+## Emergency SOS (fully local, no Supabase)
+
+`sos.html` is a separate, self-contained page — it doesn't touch the sharing feature or the Supabase backend at all. Tap the button, or shake the phone three times, and after a 3-second cancel window it grabs your current location and opens your phone's own texting app with an SOS message pre-filled, addressed to contacts you've saved. You can add your name so recipients instantly know who it's from. Those contacts (and your name) live only in this browser's local storage on this device — never uploaded, never synced.
+
+If GPS is slow, the SOS still goes out: after ~7 seconds it hands off a "I need help" message without a map pin rather than leaving you stuck on a loading screen. Triggers are guarded so a shake plus a tap (or a double-shake) can't stack multiple countdowns or double-send.
+
+Worth knowing: no web page can actually send a text message on its own — this hands you off to your phone's native Messages app with everything pre-filled, and you tap Send there. That's a platform limit, not a shortcut we took.
+
+Opening the page as `sos.html?auto=1` arms it immediately with no tap required, so it can be bound to a hardware shortcut — for example, on newer Samsung phones, Settings → Advanced features → Side key → Double press → Open app can be pointed straight at that URL.
+
+**Voice control:** during the 3-second cancel window, saying "Send" fires immediately and "Cancel" aborts — no tap needed for our part of the flow. This can't extend to the actual text-sending step, though: no web page can press Send inside your phone's native texting app, by voice or otherwise, regardless of trigger method. For a genuinely zero-tap experience including the send itself, the real answer lives at the OS level, not in this app — on iPhone, Settings → Siri & Search → Automatically Send Messages lets you say "Hey Siri, text [contact], I need help, [location]" and have it actually go out with no confirmation step. Android's Google Assistant has similar hands-free sending. Worth knowing about and mentioning to people, even though it's outside what this page can control.
+
 ## Why the location isn't blurred
 
 Since a location only ever shows up for someone who was deliberately handed the code, there's no need to fuzz or approximate it — you're already choosing exactly who gets to see it. What you're sharing is genuinely your exact position, for exactly as long as you decide.
@@ -46,7 +58,7 @@ Source-available under MIT + Commons Clause — free to use, read, modify, and s
 
 ## Under the hood
 
-Two static pages — `share.html` and `index.html` — backed by a small Supabase project. No server to run, no build step; push both files to any static host (GitHub Pages, Netlify, wherever) with `index.html` at the root so it's what people land on by default.
+Three static pages — `share.html`, `index.html`, and `sos.html` — the first two backed by a small Supabase project, the last entirely local. No server to run, no build step; push all three files to any static host (GitHub Pages, Netlify, wherever) with `index.html` at the root so it's what people land on by default.
 
 **Security model:** the database table behind this has no public read or write access at all. Every action — starting a share, checking in, ending a share, or looking one up — goes through a dedicated database function that requires the exact code. There's no way to list, scan, or browse every active share; the code isn't just a suggestion, it's the actual access control. Live updates travel over a private channel named after the code, so even the "live" part of live-tracking is only reachable by someone who already has it.
 
