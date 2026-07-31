@@ -3,235 +3,130 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Find Someone — Where I Am</title>
+<title>I'm Here! — Share your location, on your terms</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #10221F; --panel: #16302B; --panel-2: #1C3B34;
-    --gold: #E3A857; --coral: #E2725B; --sage: #7FA98C;
-    --paper: #F3EFE6; --slate: #9CB0A8; --danger: #C94C4C; --border: #234139;
+    --cream: #FBEFE0; --cream-2: #F6E4CF;
+    --navy: #14233A; --navy-soft: #33445E;
+    --coral: #E8624A; --coral-dark: #C94A34;
+    --card: #FFFFFF; --line: #EAD9C4; --slate: #7B7264;
   }
-  * { box-sizing:border-box; }
-  html,body,#map { height:100%; margin:0; padding:0; background:var(--ink); }
-  body { font-family:'Inter',sans-serif; color:var(--paper); }
-  #map { position:absolute; inset:0; z-index:0; display:none; }
-  #map.visible { display:block; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  body {
+    background: linear-gradient(160deg, #FCF4E8 0%, var(--cream) 45%, var(--cream-2) 100%);
+    color: var(--navy);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 32px 24px;
+  }
+  .wrap { width: 100%; max-width: 440px; text-align: center; }
 
-  .entry-screen {
-    position:absolute; inset:0; z-index:500; display:flex; align-items:center; justify-content:center; padding:24px;
+  .brand { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 30px; }
+  .pin {
+    width: 46px; height: 46px; flex-shrink: 0;
   }
-  .entry-screen.hidden { display:none; }
-  .card {
-    width:100%; max-width: 420px;
-    background: var(--panel); border: 1px solid var(--border); border-radius: 18px;
-    padding: 32px 28px; box-shadow: 0 20px 60px rgba(0,0,0,0.45); text-align:center;
+  .wordmark {
+    font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 30px;
+    letter-spacing: -0.02em; color: var(--navy);
   }
-  .eyebrow { font-family:'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin: 0 0 8px; }
-  h1 { font-family:'Fraunces', serif; font-weight:700; font-size: 26px; margin: 0 0 6px; letter-spacing: -0.01em; }
-  .sub { color: var(--slate); font-size: 14px; margin: 0 0 24px; line-height:1.55; }
-  .field input {
-    width:100%; background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px;
-    padding: 14px; color: var(--paper); font-family:'IBM Plex Mono', monospace; font-size: 18px;
-    letter-spacing: 0.12em; text-align:center; text-transform:uppercase;
-    margin-bottom: 14px;
-  }
-  .field input::placeholder { color: var(--slate); letter-spacing: normal; text-transform:none; font-family:'Inter',sans-serif; font-size:14px; }
-  button {
-    width:100%; font-family:'Fraunces', serif; font-weight:700; font-size: 17px;
-    padding: 15px; border-radius: 10px; border: none; cursor:pointer; background: var(--gold); color: #241705;
-    transition: transform 0.1s ease;
-  }
-  button:active { transform: scale(0.98); }
-  button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-  .error-text { color: var(--danger); font-size: 13px; margin-top: 14px; display:none; }
-  .note { font-size: 12px; color: var(--slate); margin-top: 18px; line-height:1.55; }
 
-  .hud {
-    position:absolute; top:0; left:0; right:0; z-index:1000;
-    display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:10px;
-    padding: 14px 18px;
-    background: linear-gradient(to bottom, rgba(16,34,31,0.92), rgba(16,34,31,0));
-    pointer-events:none; display:none;
+  h1 {
+    font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 30px;
+    line-height: 1.12; letter-spacing: -0.02em; margin: 0 0 14px;
   }
-  .hud.visible { display:flex; pointer-events:none; }
-  .hud * { pointer-events:auto; }
-  .brand { font-family:'Fraunces',serif; font-weight:700; font-size:16px; }
-  .brand span { color: var(--gold); }
-  .pill {
-    display:flex; align-items:center; gap:7px;
-    background: var(--panel); border:1px solid var(--border);
-    padding: 7px 12px; border-radius: 999px;
-    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.06em;
+  .sub { color: var(--navy-soft); font-size: 15px; line-height: 1.55; margin: 0 0 4px; }
+  .tag { color: var(--slate); font-size: 13px; margin: 0 0 32px; }
+
+  .choice {
+    display: block; width: 100%; text-decoration: none; text-align: left;
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 20px 22px; margin-bottom: 14px;
+    box-shadow: 0 6px 20px rgba(20,35,58,0.06);
+    transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+    display: flex; align-items: center; gap: 16px;
   }
-  .pdot { width:8px; height:8px; border-radius:50%; background: var(--gold); animation: pulse 1.8s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
-  @media (prefers-reduced-motion: reduce) { .pdot { animation:none; } }
-  .pill-row { display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
-  .leaflet-control-attribution { background: rgba(16,34,31,0.7) !important; color: var(--slate) !important; }
-  .leaflet-control-attribution a { color: var(--gold) !important; }
-  .leaflet-popup-content-wrapper { background: var(--panel); color: var(--paper); border:1px solid var(--border); border-radius:10px; }
-  .leaflet-popup-tip { background: var(--panel); }
-  .popup-label { font-family:'Fraunces',serif; font-weight:700; font-size:14px; margin:0 0 4px; }
-  .popup-meta { font-family:'IBM Plex Mono',monospace; font-size:11px; color: var(--slate); }
-  .sos-link {
-    position: fixed; top: 16px; right: 16px; z-index: 2000;
-    background: var(--danger); color: #fff; text-decoration:none;
-    font-family:'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em;
-    padding: 8px 12px; border-radius: 999px; box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+  .choice:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(20,35,58,0.10); border-color: var(--coral); }
+  .choice:active { transform: translateY(0); }
+  .choice:focus-visible { outline: 2px solid var(--coral); outline-offset: 2px; }
+
+  .icon {
+    width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
   }
+  .icon.share { background: rgba(232,98,74,0.12); }
+  .icon.find { background: rgba(20,35,58,0.07); }
+  .icon svg { width: 24px; height: 24px; }
+
+  .choice-text .t {
+    font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 16px;
+    color: var(--navy); margin: 0 0 3px;
+  }
+  .choice-text .d { color: var(--slate); font-size: 13px; line-height: 1.4; margin: 0; }
+  .chev { margin-left: auto; color: var(--line); flex-shrink: 0; }
+  .choice:hover .chev { color: var(--coral); }
+
+  .sos-line { margin-top: 22px; }
+  .sos-line a {
+    color: var(--coral-dark); font-size: 13px; font-weight: 600; text-decoration: none;
+    border-bottom: 1px solid rgba(201,74,52,0.3); padding-bottom: 1px;
+  }
+  .sos-line a:hover { border-bottom-color: var(--coral-dark); }
+
+  .footnote { color: var(--slate); font-size: 12px; margin-top: 28px; line-height: 1.5; }
 </style>
 </head>
 <body>
-  <div id="map"></div>
-  <a class="sos-link" href="sos.html">SOS</a>
-
-  <div class="hud" id="hud">
-    <div class="brand">Where I Am<span>.</span></div>
-    <div class="pill-row">
-      <div class="pill"><span class="pdot"></span><span id="agoText">—</span></div>
-      <div class="pill" id="expiryPill">—</div>
+  <div class="wrap">
+    <div class="brand">
+      <svg class="pin" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M23 3C15.3 3 9 9.2 9 16.9c0 9.8 12.2 24 13.1 25.2.5.6 1.3.6 1.8 0C24.8 40.9 37 26.7 37 16.9 37 9.2 30.7 3 23 3z" fill="#E8624A"/>
+        <circle cx="17.5" cy="16" r="2.3" fill="#fff"/>
+        <circle cx="28.5" cy="16" r="2.3" fill="#fff"/>
+        <path d="M16.5 22c1.6 2.4 4 3.8 6.5 3.8s4.9-1.4 6.5-3.8" stroke="#fff" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="wordmark">I'm Here!</span>
     </div>
+
+    <h1>Share your location,<br>on your terms.</h1>
+    <p class="sub">No account. No app download.<br>Just a live link for the moments that matter.</p>
+    <p class="tag">Perfect for road trips, flights, hikes, and pickups.</p>
+
+    <a class="choice" href="share.html">
+      <span class="icon share">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="10" r="3" stroke="#E8624A" stroke-width="2"/>
+          <path d="M12 2C7.6 2 4 5.6 4 10c0 5.4 6.6 11.3 7.4 12a.9.9 0 0 0 1.2 0C13.4 21.3 20 15.4 20 10c0-4.4-3.6-8-8-8z" stroke="#E8624A" stroke-width="2"/>
+        </svg>
+      </span>
+      <span class="choice-text">
+        <p class="t">I'm traveling</p>
+        <p class="d">Share my live location with someone</p>
+      </span>
+      <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+    <a class="choice" href="find.html">
+      <span class="icon find">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="11" cy="11" r="7" stroke="#14233A" stroke-width="2"/>
+          <path d="M20 20l-3.5-3.5" stroke="#14233A" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="choice-text">
+        <p class="t">I'm finding someone</p>
+        <p class="d">Enter a code to see where they are</p>
+      </span>
+      <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+    <p class="sos-line"><a href="sos.html">Emergency SOS &rarr;</a></p>
+
+    <p class="footnote">Your location is only ever shared with people you choose, for as long as you choose.</p>
   </div>
-
-  <div class="entry-screen" id="entryScreen">
-    <div class="card">
-      <p class="eyebrow">Where I Am</p>
-      <h1 id="cardTitle">Find someone</h1>
-      <p class="sub" id="cardSub">Enter the code they shared with you to see their live location.</p>
-      <div class="field">
-        <input type="text" id="codeInput" placeholder="Enter code" maxlength="8">
-      </div>
-      <button id="findBtn">Find</button>
-      <p class="error-text" id="errorText"></p>
-      <p class="note">Nobody is browsable here — a location only shows up if you have the exact code someone gave you.</p>
-    </div>
-  </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script>
-  const SUPABASE_URL = 'https://eycxmnnbzbcjjnhkoetp.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_C9hem1wdDzYbtLAbgbK6ZQ_FlJYxlzo';
-  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  const mapEl = document.getElementById('map');
-  const hud = document.getElementById('hud');
-  const entryScreen = document.getElementById('entryScreen');
-  const cardTitle = document.getElementById('cardTitle');
-  const cardSub = document.getElementById('cardSub');
-  const codeInput = document.getElementById('codeInput');
-  const findBtn = document.getElementById('findBtn');
-  const errorText = document.getElementById('errorText');
-  const agoText = document.getElementById('agoText');
-  const expiryPill = document.getElementById('expiryPill');
-
-  let map, marker;
-  let expiresAt = null, lastUpdatedAt = null, currentCode = null, channel = null;
-
-  function showEntry(title, sub) {
-    entryScreen.classList.remove('hidden');
-    hud.classList.remove('visible');
-    mapEl.classList.remove('visible');
-    if (title) cardTitle.textContent = title;
-    if (sub) cardSub.textContent = sub;
-  }
-
-  function showMap() {
-    entryScreen.classList.add('hidden');
-    hud.classList.add('visible');
-    mapEl.classList.add('visible');
-    if (map) setTimeout(() => map.invalidateSize(), 50);
-  }
-
-  function ensureMap() {
-    if (map) return;
-    map = L.map('map', { zoomControl: true }).setView([39.8, -98.5], 4);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-      maxZoom: 19
-    }).addTo(map);
-  }
-
-  function render(row) {
-    if (!row.is_live) {
-      const msg = row.status === 'ended' ? "This share has ended." : "This share has expired.";
-      showEntry("Not currently sharing", msg + " Ask them to start a new share if you still need to find them.");
-      if (channel) { sb.removeChannel(channel); channel = null; }
-      return;
-    }
-
-    ensureMap();
-    showMap();
-    lastUpdatedAt = new Date(row.updated_at);
-    expiresAt = new Date(row.expires_at);
-
-    if (!marker) {
-      marker = L.circleMarker([row.lat, row.lng], {
-        radius: 8, color: '#E3A857', weight: 2, fillColor: '#E3A857', fillOpacity: 1
-      }).addTo(map);
-      map.setView([row.lat, row.lng], 13);
-    } else {
-      marker.setLatLng([row.lat, row.lng]);
-    }
-    const title = row.label && row.label.trim() ? row.label.trim() : 'Live location';
-    marker.bindPopup(`<p class="popup-label">${title}</p><p class="popup-meta">Updated just now</p>`);
-    tick();
-  }
-
-  function tick() {
-    if (!lastUpdatedAt) return;
-    const secs = Math.round((Date.now() - lastUpdatedAt.getTime()) / 1000);
-    agoText.textContent = secs < 60 ? `updated ${secs}s ago` : `updated ${Math.round(secs / 60)}m ago`;
-    if (expiresAt) {
-      const remaining = expiresAt.getTime() - Date.now();
-      if (remaining <= 0) {
-        expiryPill.textContent = 'expired';
-      } else {
-        const mins = Math.floor(remaining / 60000);
-        const h = Math.floor(mins / 60), m = mins % 60;
-        expiryPill.textContent = h > 0 ? `ends in ${h}h ${m}m` : `ends in ${m}m`;
-      }
-    }
-  }
-  setInterval(tick, 1000);
-
-  async function lookup(code) {
-    errorText.style.display = 'none';
-    currentCode = code;
-    const { data, error } = await sb.rpc('get_share', { p_code: code });
-    if (error) {
-      errorText.textContent = 'Something went wrong: ' + error.message;
-      errorText.style.display = 'block';
-      return;
-    }
-    const row = Array.isArray(data) ? data[0] : data;
-    if (!row) {
-      showEntry('Find someone', 'No trip found for that code — check it and try again.');
-      return;
-    }
-    render(row);
-
-    if (channel) sb.removeChannel(channel);
-    channel = sb.channel('share:' + code);
-    channel.on('broadcast', { event: 'update' }, ({ payload }) => render(payload)).subscribe();
-  }
-
-  findBtn.addEventListener('click', () => {
-    const code = codeInput.value.trim().toUpperCase();
-    if (!code) return;
-    lookup(code);
-  });
-  codeInput.addEventListener('keydown', e => { if (e.key === 'Enter') findBtn.click(); });
-
-  const params = new URLSearchParams(window.location.search);
-  const codeParam = params.get('code');
-  if (codeParam) {
-    codeInput.value = codeParam.toUpperCase();
-    lookup(codeParam.toUpperCase());
-  }
-</script>
 </body>
 </html>
